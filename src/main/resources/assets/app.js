@@ -47,7 +47,11 @@ app.controller('UploadController', function UploadController($http, $element, $s
 
         r.on('fileSuccess', (file) => {
             var totalChunks = file.chunks.length;
-            $http.post('api/upload/' + $ctrl.session + '/complete', file.fileName).then(
+            $http.post('api/upload/' + $ctrl.session + '/complete', {
+                fileName: file.fileName,
+                totalChunks: totalChunks,
+                fileId: ourId
+            }).then(
                 function(resp) {
                     $ctrl.loading = false;
                 }, showError

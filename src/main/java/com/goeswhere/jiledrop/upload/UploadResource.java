@@ -52,13 +52,10 @@ public class UploadResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("complete")
-    public UploadSuccess complete(
-            @QueryParam("fileId") FileId fileId,
-            @QueryParam("total") int total,
-            @NotEmpty String name
-    ) throws IOException {
-        return new UploadSuccess(storage.combine(fileId, name, total));
+    public UploadSuccess complete(@NotNull CompletionRequest request) throws IOException {
+        return new UploadSuccess(storage.combine(new FileId(request.fileId), request.fileName, request.totalChunks));
     }
 }

@@ -66,7 +66,7 @@ public class Storage {
         try {
 
             try (OutputStream dest = new FileOutputStream(temp)) {
-                for (int chunk = 0; chunk < totalChunks; chunk++) {
+                for (int chunk = 1; chunk <= totalChunks; chunk++) {
                     try (final InputStream chunkStream = new FileInputStream(pathForChunk(fileId, chunk))) {
                         ByteStreams.copy(chunkStream, dest);
                     }
