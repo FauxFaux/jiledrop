@@ -5,6 +5,7 @@ import com.goeswhere.jiledrop.app.Storage;
 import com.goeswhere.jiledrop.types.FileId;
 import com.goeswhere.jiledrop.types.Target;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,19 +46,19 @@ public class UploadResource {
     public boolean storeChunk(
             @NotNull @FormDataParam("fileId") FileId fileId,
             @NotNull @FormDataParam("resumableChunkNumber") int chunkNumber,
+            @NotNull @FormDataParam("resumableTotalChunks") int totalChunks,
             @NotNull @FormDataParam("file") InputStream data) throws IOException {
-        return storage.storePart(fileId, chunkNumber, data);
+        return storage.storePart(fileId, chunkNumber, data, chunkNumber == totalChunks);
     }
 
     @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("complete")
-    public String complete(
+    public UploadSuccess complete(
             @QueryParam("fileId") FileId fileId,
             @QueryParam("total") int total,
-            String name
+            @NotEmpty String name
     ) throws IOException {
-        return storage.combine(fileId, name, total);
+        return new UploadSuccess(storage.combine(fileId, name, total));
     }
 }

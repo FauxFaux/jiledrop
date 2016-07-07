@@ -20,8 +20,8 @@ public class Storage {
     private final File wipDirectory;
 
     public Storage(Target target, File storageDirectory) {
-        targetDirectory = new File(storageDirectory, target.value);
-        wipDirectory = new File(targetDirectory, "wip");
+        targetDirectory = new File(storageDirectory, target.value).getAbsoluteFile();
+        wipDirectory = new File(targetDirectory, "wip").getAbsoluteFile();
 
         ensureDirectory(wipDirectory);
     }
@@ -35,7 +35,7 @@ public class Storage {
         return new File(wipDirectory, fileId.value + "." + chunkNumber + ".chunk");
     }
 
-    public boolean storePart(FileId fileId, int chunkNumber, InputStream data) throws IOException {
+    public boolean storePart(FileId fileId, int chunkNumber, InputStream data, boolean lastChunk) throws IOException {
         if (partComplete(fileId, chunkNumber)) {
             return false;
         }
@@ -43,7 +43,7 @@ public class Storage {
         final File temp = File.createTempFile("uploading", ".wip", wipDirectory);
         try {
             try (OutputStream tempStream = new FileOutputStream(temp)) {
-                if (CHUNK_SIZE != ByteStreams.copy(data, tempStream)) {
+                if (CHUNK_SIZE != ByteStreams.copy(data, tempStream) && !lastChunk) {
                     throw new IllegalStateException("not enough data / failure writing");
                 }
             }

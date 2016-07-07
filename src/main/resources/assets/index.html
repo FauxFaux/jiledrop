@@ -18,6 +18,13 @@
         <h1 class="display-3">Secure File Upload</h1>
     </div>
 </div>
+
+<div class="jumbotron alert alert-danger" ng-if="!$ctrl.resumableSupported">
+    <div class="container">
+        <h2 class="display-3">Your browser is too old for this service. Please use a different browser.</h2>
+    </div>
+</div>
+
 <div class="container" ng-if="!$ctrl.session">
 
     <div class="col-md-6">
@@ -59,12 +66,41 @@
         <p>Please enter your username and password to login.</p>
     </div>
 </div>
-<!--
-<div class="form-group">
-    <label for="exampleInputFile">File input</label>
-    <input type="file" id="exampleInputFile">
-    <p class="help-block">Example block-level help text here.</p>
+
+<div class="container" ng-if="$ctrl.session">
+    <div class="col-md-6">
+        <h2>Upload a file</h2>
+        <form>
+            <fieldset ng-disabled="$ctrl.loading">
+                <div class="form-group">
+                    <label for="file">Selected file</label>
+                    <input
+                            type="file"
+                            class="form-control"
+                            id="file">
+                </div>
+                <div ng-if="$ctrl.fileError">
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        <span ng-bind="$ctrl.fileError"></span>
+                    </div>
+                </div>
+                <button ng-click="$ctrl.sendFile()" class="btn btn-default btn-primary">Upload</button>
+                <span ng-bind="$ctrl.progress"/>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h2>Existing files</h2>
+        <ul>
+            <li>lorem</li>
+            <li>ipsum</li>
+            <li>dolor</li>
+        </ul>
+        <p>You do not have permission to download files.</p>
+        <p>You do not have permission to delete files.</p>
+    </div>
 </div>
--->
 </body>
 </html>

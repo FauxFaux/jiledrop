@@ -25,10 +25,10 @@ public class StorageTest {
     public void happy() throws IOException {
         final Storage s = temporaryStorage();
         assertFalse(s.partComplete(f, 0));
-        s.storePart(f, 0, randomChunk());
+        s.storePart(f, 0, randomChunk(), false);
         assertTrue(s.partComplete(f, 0));
         assertFalse(s.partComplete(f, 1));
-        s.storePart(f, 1, randomChunk());
+        s.storePart(f, 1, randomChunk(), false);
         assertTrue(s.partComplete(f, 1));
         System.out.println(s.combine(f, "out", 2));
     }
@@ -41,7 +41,7 @@ public class StorageTest {
 
         for (int i = 0; i < totalChunks; i++) {
             final byte[] out = chunkOfBytes();
-            s.storePart(f, i, new ByteArrayInputStream(out));
+            s.storePart(f, i, new ByteArrayInputStream(out), false);
             digest.update(out);
         }
 
@@ -58,13 +58,13 @@ public class StorageTest {
     @Test(expected = IllegalStateException.class)
     public void invalidChunkShort() throws IOException {
         final Storage s = temporaryStorage();
-        s.storePart(f, 0, new ByteArrayInputStream(new byte[Storage.CHUNK_SIZE - 1]));
+        s.storePart(f, 0, new ByteArrayInputStream(new byte[Storage.CHUNK_SIZE - 1]), false);
     }
 
     @Test(expected = IllegalStateException.class)
     public void invalidChunkLong() throws IOException {
         final Storage s = temporaryStorage();
-        s.storePart(f, 0, new ByteArrayInputStream(new byte[Storage.CHUNK_SIZE + 1]));
+        s.storePart(f, 0, new ByteArrayInputStream(new byte[Storage.CHUNK_SIZE + 1]), false);
     }
 
     @Test
@@ -88,9 +88,9 @@ public class StorageTest {
     @Test(expected = FileNotFoundException.class)
     public void combineMissingChunk() throws IOException {
         final Storage s = temporaryStorage();
-        s.storePart(f, 0, randomChunk());
+        s.storePart(f, 0, randomChunk(), false);
         // chunk 1 missing
-        s.storePart(f, 2, randomChunk());
+        s.storePart(f, 2, randomChunk(), false);
         s.combine(f, "bar", 3);
     }
 
