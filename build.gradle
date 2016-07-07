@@ -1,0 +1,71 @@
+apply plugin: 'java'
+apply plugin: 'gradle-one-jar'
+apply plugin: 'application'
+
+sourceCompatibility = '1.8'
+
+// UTF-8 should be standard by now. So use it!
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// The main class of the application
+mainClassName = 'com.goeswhere.jiledrop.app.JileDropApplication'
+
+// Add Gradle OneJar Plugin, see https://github.com/rholder/gradle-one-jar
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
+    }
+}
+
+// Set our project variables
+project.ext {
+    dropwizardVersion = '1.0.0-rc3'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(
+            'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-forms:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-migrations:' + dropwizardVersion,
+            'com.h2database:h2:1.4.192',
+    )
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.apache.commons:commons-io:1.3.2'
+}
+
+configurations.all {
+    resolutionStrategy {
+        failOnVersionConflict()
+        force 'com.fasterxml.jackson.core:jackson-annotations:2.7.4'
+        force 'org.slf4j:slf4j-api:1.7.21'
+    }
+}
+
+// Configure the oneJar task
+task oneJar(type: OneJar) {
+    mainClass = mainClassName
+}
+
+build.dependsOn(oneJar)
+
+run {
+    args 'server', 'src/dist/config/test.yml'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
+
+artifacts {
+    oneJar
+}
