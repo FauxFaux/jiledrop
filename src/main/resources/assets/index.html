@@ -18,11 +18,11 @@
         <h1 class="display-3">Secure File Upload</h1>
     </div>
 </div>
-<div class="container" ng-if="'login' == $ctrl.state">
+<div class="container" ng-if="!$ctrl.session">
 
     <div class="col-md-6">
         <form>
-            <fieldset ng-disabled="loading">
+            <fieldset ng-disabled="$ctrl.loading">
                 <div class="form-group">
                     <label for="user">Email address</label>
                     <input
@@ -41,7 +41,7 @@
                             placeholder="Password"
                             ng-model="$ctrl.password">
                 </div>
-                <div ng-if="loginError">
+                <div ng-if="$ctrl.loginError">
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>

@@ -2,7 +2,7 @@ package com.goeswhere.jiledrop.types;
 
 import java.util.regex.Pattern;
 
-public class FileId {
+public class FileId implements Type {
     public static final int LENGTH = 10;
     public static final Pattern VALID_FILE_ID = Pattern.compile("^[a-zA-Z0-9]{" + LENGTH + "}$");
 
@@ -13,5 +13,10 @@ public class FileId {
             throw new IllegalStateException("invalid fileId: " + fileId);
         }
         this.value = fileId;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
     }
 }

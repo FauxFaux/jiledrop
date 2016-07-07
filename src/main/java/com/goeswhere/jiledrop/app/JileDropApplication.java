@@ -1,6 +1,8 @@
 package com.goeswhere.jiledrop.app;
 
+import com.goeswhere.jiledrop.auth.AddUserTask;
 import com.goeswhere.jiledrop.auth.AuthResource;
+import com.goeswhere.jiledrop.auth.ListUsersTask;
 import com.goeswhere.jiledrop.upload.UploadResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -49,5 +51,7 @@ public class JileDropApplication extends Application<JileDropConfiguration> {
         final DBIFactory factory = new DBIFactory();
         final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
         environment.jersey().register(new AuthResource(jdbi));
+        environment.admin().addTask(new ListUsersTask(jdbi));
+        environment.admin().addTask(new AddUserTask(jdbi));
     }
 }

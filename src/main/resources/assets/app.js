@@ -3,7 +3,7 @@ var app = angular.module('jiledrop', []);
 app.controller('UploadController', function UploadController($http) {
     var $ctrl = this;
 
-    $ctrl.state = 'login';
+    $ctrl.session = null;
 
     $ctrl.login = function() {
         $ctrl.loginError = '';
@@ -12,7 +12,10 @@ app.controller('UploadController', function UploadController($http) {
             username: $ctrl.username,
             password: $ctrl.password
         }).then(function(resp) {
-            alert(resp);
+            $ctrl.session = resp.data.target;
+            if (!$ctrl.session) {
+                $ctrl.loginError = 'Invalid username or password';
+            }
             $ctrl.loading = false;
         }, function(err) {
             $ctrl.loginError = 'Unknown problem logging in: ' + err.status;

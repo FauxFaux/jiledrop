@@ -67,4 +67,13 @@ public class PBKDF2 {
     private static String encode(byte[] array) {
         return Base64.getEncoder().encodeToString(array);
     }
+
+    public static char[] randomChars(int length) {
+        final char[] chars = new char[length];
+        for (int i = 0; i < length; i++) {
+            chars[i] = (char) (RANDOM.nextInt('z' - 'a' + 1) + 'a');
+        }
+
+        return chars;
+    }
 }
