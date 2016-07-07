@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="app.css">
 </head>
-<body ng-controller="UploadController">
+<body ng-controller="UploadController as $ctrl">
 <noscript>
     JavaScript is required.
 </noscript>
@@ -18,27 +18,37 @@
         <h1 class="display-3">Secure File Upload</h1>
     </div>
 </div>
-<div class="container">
+<div class="container" ng-if="'login' == $ctrl.state">
 
     <div class="col-md-6">
         <form>
             <fieldset ng-disabled="loading">
                 <div class="form-group">
                     <label for="user">Email address</label>
-                    <input type="email" class="form-control" id="user" placeholder="Email" ng-model="username">
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="user"
+                            placeholder="Email"
+                            ng-model="$ctrl.username">
                 </div>
                 <div class="form-group">
                     <label for="pass">Password</label>
-                    <input type="password" class="form-control" id="pass" placeholder="Password" ng-model="password">
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="pass"
+                            placeholder="Password"
+                            ng-model="$ctrl.password">
                 </div>
                 <div ng-if="loginError">
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>
-                        <span ng-bind="loginError"></span>
+                        <span ng-bind="$ctrl.loginError"></span>
                     </div>
                 </div>
-                <button ng-click="login()" class="btn btn-default btn-primary">Login</button>
+                <button ng-click="$ctrl.login()" class="btn btn-default btn-primary">Login</button>
             </fieldset>
         </form>
     </div>

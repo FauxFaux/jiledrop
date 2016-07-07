@@ -1,18 +1,22 @@
 var app = angular.module('jiledrop', []);
 
-app.controller('UploadController', function UploadController($scope, $http) {
-    $scope.login = function() {
-        $scope.loginError = '';
-        $scope.loading = true;
-        $http.post('auth', {
-            username: $scope.username,
-            password: $scope.password
+app.controller('UploadController', function UploadController($http) {
+    var $ctrl = this;
+
+    $ctrl.state = 'login';
+
+    $ctrl.login = function() {
+        $ctrl.loginError = '';
+        $ctrl.loading = true;
+        $http.post('api/auth', {
+            username: $ctrl.username,
+            password: $ctrl.password
         }).then(function(resp) {
             alert(resp);
-            $scope.loading = false;
+            $ctrl.loading = false;
         }, function(err) {
-            $scope.loginError = 'Unknown problem logging in: ' + err.status;
-            $scope.loading = false;
+            $ctrl.loginError = 'Unknown problem logging in: ' + err.status;
+            $ctrl.loading = false;
         });
     };
 });

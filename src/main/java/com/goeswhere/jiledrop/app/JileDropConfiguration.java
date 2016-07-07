@@ -1,9 +1,13 @@
 package com.goeswhere.jiledrop.app;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 
 public class JileDropConfiguration extends Configuration {
@@ -31,5 +35,19 @@ public class JileDropConfiguration extends Configuration {
         logger.info("picked storage directory: {}", candidate);
 
         this.storageDirectory = candidate;
+    }
+
+    @Valid
+    @NotNull
+    private DataSourceFactory database = new DataSourceFactory();
+
+    @JsonProperty("database")
+    public void setDataSourceFactory(DataSourceFactory factory) {
+        this.database = factory;
+    }
+
+    @JsonProperty("database")
+    public DataSourceFactory getDataSourceFactory() {
+        return database;
     }
 }
