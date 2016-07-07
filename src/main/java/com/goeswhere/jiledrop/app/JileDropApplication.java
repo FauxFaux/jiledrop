@@ -2,6 +2,7 @@ package com.goeswhere.jiledrop.app;
 
 import com.goeswhere.jiledrop.upload.UploadResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -20,6 +21,7 @@ public class JileDropApplication extends Application<JileDropConfiguration> {
     @Override
     public void initialize(Bootstrap<JileDropConfiguration> bootstrap) {
         bootstrap.addBundle(new MultiPartBundle());
+        bootstrap.addBundle(new AssetsBundle());
     }
 
     @Override

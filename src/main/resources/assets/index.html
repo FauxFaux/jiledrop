@@ -1,0 +1,60 @@
+<!doctype html>
+<html ng-app="jiledrop">
+<head>
+    <title>My Angular App</title>
+    <script src="angular.min.js"></script>
+    <script src="resumable.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body ng-controller="UploadController">
+<noscript>
+    JavaScript is required.
+</noscript>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">Secure File Upload</h1>
+    </div>
+</div>
+<div class="container">
+
+    <div class="col-md-6">
+        <form>
+            <fieldset ng-disabled="loading">
+                <div class="form-group">
+                    <label for="user">Email address</label>
+                    <input type="email" class="form-control" id="user" placeholder="Email" ng-model="username">
+                </div>
+                <div class="form-group">
+                    <label for="pass">Password</label>
+                    <input type="password" class="form-control" id="pass" placeholder="Password" ng-model="password">
+                </div>
+                <div ng-if="loginError">
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        <span ng-bind="loginError"></span>
+                    </div>
+                </div>
+                <button ng-click="login()" class="btn btn-default btn-primary">Login</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Welcome!</h2>
+        <p>This service is for authorised users only.</p>
+        <p>Please enter your username and password to login.</p>
+    </div>
+</div>
+<!--
+<div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input type="file" id="exampleInputFile">
+    <p class="help-block">Example block-level help text here.</p>
+</div>
+-->
+</body>
+</html>
